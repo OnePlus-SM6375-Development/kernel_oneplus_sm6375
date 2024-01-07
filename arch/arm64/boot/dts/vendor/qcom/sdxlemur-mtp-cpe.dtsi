@@ -80,6 +80,24 @@
 		qcom,mod-usecs-min = <30>;
 		qcom,mod-usecs-max = <60>;
 	};
+
+	ioss_qps615_eth0: qps615@eth0 {
+		qcom,name = "eth0";
+		qcom,ioss_instance = <0>;
+
+		qcom,ioss_channels =
+			<&ioss_aqr_rx>,
+			<&ioss_aqr_tx>;
+	};
+
+	ioss_qps615_eth1: qps615@eth1 {
+		qcom,name = "eth1";
+		qcom,ioss_instance = <1>;
+
+		qcom,ioss_channels =
+			<&ioss_napa_rx>,
+			<&ioss_napa_tx>;
+	};
 };
 
 &i2c_5 {
@@ -90,7 +108,7 @@
 		reg = <0x77>;
 		gpio-config-reg = <0x801208>;
 		ep-reset-reg = <0x801210>;
-		ep-reset-gpio-mask = <0xc>;
+		ep-reset-gpio-mask = <0xf>;
 		version-reg = <0x800000>;
 		dump-regs = <0x801330 0x801350 0x801370>;
 		reg_update = <0x82c030 0x1
@@ -105,14 +123,9 @@
 					0x82c01c 0x10
 					0x82c030 0xf
 					0x828000 0xf
-					0x82b268 0x2>;
-		/*FOM for preset caluclation*/
-		switch_reg_update = <0x82c02c 0x00000007
-					0x824a10 0x00000001
-					0x82c030 0x00000008
-					0x828000 0x00000001
-					0x82b074 0x00000020
-					0x82b2bc 0x00000001>;
+					0x82b268 0x2
+					0x82C02C 0x4
+					0x8249DC 0x0>;
 	};
 };
 
@@ -314,6 +327,8 @@
 				compatible = "qcom,ioss-v2-device";
 				qcom,phy-rst-gpio = <0>;
 				qcom,ioss = <&ioss>;
+				qcom,ioss_interfaces = <&ioss_qps615_eth0>;
+
 				qcom,ioss_instance = <0>;
 				qcom,ioss_channels =
 					<&ioss_aqr_rx>,
@@ -350,10 +365,13 @@
 				compatible = "qcom,ioss-v2-device";
 				qcom,phy-rst-gpio = <1>;
 				qcom,ioss = <&ioss>;
+				qcom,ioss_interfaces = <&ioss_qps615_eth1>;
+
 				qcom,ioss_instance = <1>;
 				qcom,ioss_channels =
 					<&ioss_napa_rx>,
 					<&ioss_napa_tx>;
+
 
 				qcom,ioss-wol-phy;
 				qcom,ioss-wol-magic;
